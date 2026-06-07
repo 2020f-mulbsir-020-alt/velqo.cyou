@@ -1,0 +1,919 @@
+/* ============================================
+   VELQO — Design Tokens
+   ============================================ */
+:root {
+  --primary: #1C1F24;
+  --secondary: #DADDE3;
+  --background: #F7F8FA;
+  --text: #121417;
+  --accent: #8FA3B8;
+
+  --font-heading: 'Libre Franklin', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --font-body: 'Inter', 'IBM Plex Sans', system-ui, sans-serif;
+
+  --ease-soft: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-silence: cubic-bezier(0.25, 0.1, 0.25, 1);
+  --duration-slow: 1.2s;
+  --duration-medium: 0.8s;
+  --duration-fast: 0.4s;
+
+  --space-xs: 0.5rem;
+  --space-sm: 1rem;
+  --space-md: 2rem;
+  --space-lg: 4rem;
+  --space-xl: 8rem;
+  --space-2xl: 12rem;
+}
+
+/* ============================================
+   Reset & Base
+   ============================================ */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  font-family: var(--font-body);
+  font-weight: 300;
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--text);
+  background-color: var(--background);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-heading);
+  font-weight: 400;
+  line-height: 1.2;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  background: none;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ============================================
+   Reveal Animation System
+   ============================================ */
+.reveal {
+  opacity: 0;
+  transform: translateY(12px);
+  transition:
+    opacity var(--duration-slow) var(--ease-silence),
+    transform var(--duration-slow) var(--ease-silence);
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ============================================
+   Header — Vertical Line + Radial Menu
+   ============================================ */
+.site-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  height: 100vh;
+  pointer-events: none;
+}
+
+.header-trigger {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 48px;
+  height: 100vh;
+  pointer-events: auto;
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  padding: 0;
+}
+
+.header-line {
+  display: block;
+  width: 1px;
+  height: 100%;
+  background-color: var(--accent);
+  opacity: 0.6;
+  transition: opacity var(--duration-fast) var(--ease-soft);
+}
+
+.header-trigger:hover .header-line,
+.header-trigger[aria-expanded="true"] .header-line {
+  opacity: 1;
+}
+
+.radial-menu {
+  position: fixed;
+  top: 50%;
+  left: 24px;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+.radial-menu.is-open {
+  pointer-events: auto;
+}
+
+.radial-menu__list {
+  list-style: none;
+  position: relative;
+}
+
+.radial-menu__link {
+  position: absolute;
+  font-family: var(--font-heading);
+  font-size: 0.8125rem;
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text);
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0.9);
+  transition:
+    opacity var(--duration-medium) var(--ease-silence),
+    transform var(--duration-medium) var(--ease-silence);
+  white-space: nowrap;
+  padding: var(--space-xs) var(--space-sm);
+}
+
+.radial-menu.is-open .radial-menu__link {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.radial-menu__link:hover,
+.radial-menu__link:focus-visible {
+  color: var(--accent);
+  outline: none;
+}
+
+/* ============================================
+   Sections — Shared
+   ============================================ */
+.section {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-lg) var(--space-md);
+  padding-left: calc(var(--space-md) + 48px);
+  position: relative;
+}
+
+.section__heading {
+  font-size: clamp(1.25rem, 3vw, 1.75rem);
+  font-weight: 300;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: var(--space-md);
+}
+
+/* ============================================
+   Section 1 — The Empty Canvas
+   ============================================ */
+.section--canvas {
+  flex-direction: column;
+  gap: var(--space-xl);
+}
+
+.canvas__line {
+  width: min(60vw, 400px);
+  height: 1px;
+  background-color: var(--secondary);
+  transition: width var(--duration-slow) var(--ease-silence);
+}
+
+.section--canvas.is-scrolled .canvas__line {
+  width: min(80vw, 600px);
+  background-color: var(--accent);
+}
+
+.canvas__emerge {
+  opacity: 0;
+  transition: opacity var(--duration-slow) var(--ease-silence);
+}
+
+.section--canvas.is-scrolled .canvas__emerge {
+  opacity: 1;
+}
+
+.canvas__text {
+  font-family: var(--font-heading);
+  font-size: clamp(0.875rem, 2vw, 1.125rem);
+  font-weight: 300;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent);
+  text-align: center;
+}
+
+/* ============================================
+   Section 2 — The Structure Grid
+   ============================================ */
+.section--grid {
+  padding-top: var(--space-2xl);
+  padding-bottom: var(--space-2xl);
+}
+
+.grid-container {
+  position: relative;
+  width: 100%;
+  max-width: 900px;
+  aspect-ratio: 3 / 2;
+}
+
+.grid-overlay {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(var(--secondary) 1px, transparent 1px),
+    linear-gradient(90deg, var(--secondary) 1px, transparent 1px);
+  background-size: calc(100% / 5) calc(100% / 4);
+  opacity: 0;
+  transition: opacity var(--duration-slow) var(--ease-silence);
+}
+
+.section--grid.is-visible .grid-overlay {
+  opacity: 0.35;
+}
+
+.grid-nodes {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  gap: 0;
+}
+
+.node {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  cursor: default;
+  padding: var(--space-sm);
+}
+
+.node::before {
+  content: '';
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  background-color: var(--accent);
+  border-radius: 50%;
+  opacity: 0.4;
+  transition:
+    transform var(--duration-medium) var(--ease-soft),
+    opacity var(--duration-medium) var(--ease-soft);
+}
+
+.node:hover::before,
+.node:focus-within::before {
+  transform: scale(2);
+  opacity: 1;
+}
+
+.node__label {
+  font-family: var(--font-heading);
+  font-size: 0.75rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text);
+  opacity: 0;
+  transform: translateY(4px);
+  transition:
+    opacity var(--duration-fast) var(--ease-soft),
+    transform var(--duration-fast) var(--ease-soft);
+}
+
+.node:hover .node__label,
+.node:focus-within .node__label {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.node__detail {
+  position: absolute;
+  top: calc(50% + 1.5rem);
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.75rem;
+  color: var(--accent);
+  text-align: center;
+  max-width: 180px;
+  opacity: 0;
+  transition: opacity var(--duration-medium) var(--ease-silence);
+  pointer-events: none;
+}
+
+.node:hover .node__detail,
+.node:focus-within .node__detail {
+  opacity: 1;
+}
+
+/* ============================================
+   Section 3 — The Idea Flow
+   ============================================ */
+.section--flow {
+  min-height: 80vh;
+}
+
+.flow-container {
+  position: relative;
+  height: 120px;
+  width: 100%;
+  max-width: 500px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.flow-statement {
+  position: absolute;
+  font-family: var(--font-heading);
+  font-size: clamp(1.125rem, 3vw, 1.5rem);
+  font-weight: 300;
+  letter-spacing: 0.05em;
+  text-align: center;
+  color: var(--text);
+  opacity: 0;
+  transition: opacity 1.5s var(--ease-silence);
+}
+
+.flow-statement.is-active {
+  opacity: 1;
+}
+
+.flow-statement.is-fading {
+  opacity: 0;
+}
+
+/* ============================================
+   Section 4 — The Module Space
+   ============================================ */
+.section--modules {
+  min-height: auto;
+  padding-top: var(--space-2xl);
+  padding-bottom: var(--space-2xl);
+}
+
+.modules-container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xl);
+  width: 100%;
+  max-width: 600px;
+}
+
+.module {
+  padding: var(--space-md) 0;
+  border-top: 1px solid var(--secondary);
+  transition: padding var(--duration-medium) var(--ease-soft);
+}
+
+.module:last-child {
+  border-bottom: 1px solid var(--secondary);
+}
+
+.module:hover,
+.module:focus-within {
+  padding: var(--space-lg) 0;
+}
+
+.module__title {
+  font-size: clamp(1rem, 2.5vw, 1.25rem);
+  font-weight: 400;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--primary);
+  margin-bottom: var(--space-xs);
+}
+
+.module__def {
+  font-size: 0.9375rem;
+  color: var(--accent);
+  margin-bottom: 0;
+}
+
+.module__expand {
+  font-size: 0.875rem;
+  color: var(--text);
+  opacity: 0;
+  max-height: 0;
+  overflow: hidden;
+  margin-top: 0;
+  transition:
+    opacity var(--duration-medium) var(--ease-silence),
+    max-height var(--duration-medium) var(--ease-silence),
+    margin-top var(--duration-medium) var(--ease-silence);
+}
+
+.module:hover .module__expand,
+.module:focus-within .module__expand {
+  opacity: 0.7;
+  max-height: 3rem;
+  margin-top: var(--space-sm);
+}
+
+/* ============================================
+   Section 5 — The Balance Field
+   ============================================ */
+.balance-field {
+  position: relative;
+  width: 100%;
+  max-width: 700px;
+  height: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.balance-element {
+  position: absolute;
+  background-color: var(--secondary);
+  transition: transform 3s var(--ease-silence);
+}
+
+.balance-element--left {
+  width: 80px;
+  height: 80px;
+  left: 15%;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.balance-element--center {
+  width: 40px;
+  height: 40px;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  background-color: var(--accent);
+  opacity: 0.5;
+}
+
+.balance-element--right {
+  width: 60px;
+  height: 60px;
+  right: 15%;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.balance-field.is-balanced .balance-element--left {
+  transform: translateY(-50%) translateX(30px);
+}
+
+.balance-field.is-balanced .balance-element--right {
+  transform: translateY(-50%) translateX(-20px);
+}
+
+.balance-caption {
+  position: absolute;
+  bottom: 0;
+  font-size: 0.8125rem;
+  letter-spacing: 0.08em;
+  color: var(--accent);
+  text-align: center;
+  width: 100%;
+}
+
+/* ============================================
+   Section 6 — The Thinking Room
+   ============================================ */
+.section--thinking {
+  background-color: var(--primary);
+  color: var(--secondary);
+  min-height: 100vh;
+}
+
+.thinking-room {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+  max-width: 500px;
+  width: 100%;
+}
+
+.thought-fragment {
+  font-family: var(--font-heading);
+  font-size: clamp(1rem, 2.5vw, 1.25rem);
+  font-weight: 300;
+  letter-spacing: 0.04em;
+  color: var(--secondary);
+  opacity: 0.4;
+  cursor: pointer;
+  transition:
+    opacity var(--duration-medium) var(--ease-silence),
+    transform var(--duration-medium) var(--ease-silence);
+  outline: none;
+  padding: var(--space-xs) 0;
+}
+
+.thought-fragment:hover,
+.thought-fragment:focus-visible {
+  opacity: 0.7;
+}
+
+.thought-fragment.is-complete {
+  opacity: 1;
+}
+
+/* ============================================
+   Section 7 — The Reduction Wall
+   ============================================ */
+.reduction-wall {
+  width: 100%;
+  max-width: 800px;
+  text-align: center;
+}
+
+.reduction-hint {
+  font-size: 0.75rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: var(--space-md);
+}
+
+.reduction-stage {
+  margin-bottom: var(--space-md);
+}
+
+.reduction-svg {
+  width: 100%;
+  height: auto;
+}
+
+.reduction-line {
+  stroke: var(--accent);
+  stroke-width: 1;
+  opacity: 0.6;
+  transition:
+    opacity var(--duration-slow) var(--ease-silence),
+    stroke-width var(--duration-slow) var(--ease-silence);
+}
+
+.reduction-point {
+  fill: var(--accent);
+  opacity: 0;
+  transition: opacity var(--duration-slow) var(--ease-silence);
+}
+
+.reduction-layer.is-active .reduction-line {
+  opacity: 1;
+}
+
+.reduction-layer.is-active .reduction-point {
+  opacity: 0.8;
+}
+
+.reduction-layer--lines.is-dissolving .reduction-line {
+  opacity: 0;
+  stroke-width: 0;
+}
+
+.reduction-layer--points.is-dissolving .reduction-point {
+  opacity: 0;
+  transform: scale(0);
+}
+
+.reduction-point--final {
+  opacity: 0;
+}
+
+.reduction-layer--empty.is-active .reduction-point--final {
+  opacity: 0.4;
+}
+
+.reduction-btn {
+  font-family: var(--font-heading);
+  font-size: 0.75rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent);
+  padding: var(--space-sm) var(--space-md);
+  border: 1px solid var(--secondary);
+  transition:
+    border-color var(--duration-fast) var(--ease-soft),
+    color var(--duration-fast) var(--ease-soft);
+}
+
+.reduction-btn:hover,
+.reduction-btn:focus-visible {
+  border-color: var(--accent);
+  color: var(--text);
+  outline: none;
+}
+
+/* ============================================
+   Section 8 — The Clarity Timeline
+   ============================================ */
+.timeline {
+  position: relative;
+  max-width: 400px;
+  width: 100%;
+  padding-left: var(--space-lg);
+}
+
+.timeline__line {
+  position: absolute;
+  left: 6px;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background-color: var(--secondary);
+}
+
+.timeline__entry {
+  position: relative;
+  padding-bottom: var(--space-lg);
+}
+
+.timeline__entry:last-child {
+  padding-bottom: 0;
+}
+
+.timeline__point {
+  position: absolute;
+  left: calc(-1 * var(--space-lg) + 3px);
+  top: 6px;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background-color: var(--accent);
+  opacity: 0.5;
+  transition: opacity var(--duration-fast) var(--ease-soft);
+}
+
+.timeline__entry:hover .timeline__point,
+.timeline__entry:focus-within .timeline__point {
+  opacity: 1;
+}
+
+.timeline__year {
+  display: block;
+  font-family: var(--font-heading);
+  font-size: 0.75rem;
+  letter-spacing: 0.15em;
+  color: var(--accent);
+  margin-bottom: var(--space-xs);
+}
+
+.timeline__text {
+  font-size: 0.9375rem;
+  font-weight: 300;
+  color: var(--text);
+  line-height: 1.5;
+}
+
+/* ============================================
+   Section 9 — The Silence Zone
+   ============================================ */
+.section--silence {
+  min-height: 70vh;
+  padding: 0;
+}
+
+.silence-zone {
+  width: 100%;
+  height: 70vh;
+  position: relative;
+  overflow: hidden;
+}
+
+.silence-canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* ============================================
+   Section 10 — The Final Statement
+   ============================================ */
+.section--final {
+  min-height: 100vh;
+}
+
+.final-field {
+  text-align: center;
+  max-width: 700px;
+}
+
+.final-statement {
+  font-family: var(--font-heading);
+  font-size: clamp(1.5rem, 5vw, 2.5rem);
+  font-weight: 300;
+  letter-spacing: 0.04em;
+  line-height: 1.4;
+  color: var(--primary);
+  opacity: 0;
+  transform: translateY(20px);
+  transition:
+    opacity 2s var(--ease-silence),
+    transform 2s var(--ease-silence);
+  margin-bottom: var(--space-lg);
+}
+
+.final-field.is-visible .final-statement {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.final-btn {
+  display: inline-block;
+  font-family: var(--font-heading);
+  font-size: 0.8125rem;
+  font-weight: 400;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--text);
+  padding: var(--space-sm) var(--space-lg);
+  border: 1px solid var(--secondary);
+  opacity: 0;
+  transition:
+    opacity 1.5s var(--ease-silence) 0.8s,
+    border-color var(--duration-fast) var(--ease-soft),
+    color var(--duration-fast) var(--ease-soft);
+}
+
+.final-field.is-visible .final-btn {
+  opacity: 1;
+}
+
+.final-btn:hover,
+.final-btn:focus-visible {
+  border-color: var(--accent);
+  color: var(--accent);
+  outline: none;
+}
+
+/* ============================================
+   Contact
+   ============================================ */
+.section--contact {
+  min-height: 50vh;
+  flex-direction: column;
+  align-items: flex-start;
+  padding-bottom: var(--space-2xl);
+}
+
+.contact-text {
+  font-size: clamp(1rem, 2.5vw, 1.25rem);
+  font-weight: 300;
+}
+
+.contact-link {
+  color: var(--accent);
+  border-bottom: 1px solid transparent;
+  transition: border-color var(--duration-fast) var(--ease-soft);
+}
+
+.contact-link:hover,
+.contact-link:focus-visible {
+  border-bottom-color: var(--accent);
+  outline: none;
+}
+
+/* ============================================
+   Footer
+   ============================================ */
+.site-footer {
+  padding: var(--space-md) var(--space-md) var(--space-md) calc(var(--space-md) + 48px);
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  color: var(--accent);
+  opacity: 0.6;
+}
+
+/* ============================================
+   Responsive — Mobile First
+   ============================================ */
+@media (max-width: 768px) {
+  .section {
+    padding: var(--space-md) var(--space-sm);
+    padding-left: calc(var(--space-sm) + 40px);
+  }
+
+  .header-trigger {
+    width: 40px;
+  }
+
+  .radial-menu {
+    left: 20px;
+  }
+
+  .radial-menu__link {
+    font-size: 0.75rem;
+  }
+
+  .grid-nodes {
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+  }
+
+  .balance-element--left {
+    left: 10%;
+    width: 50px;
+    height: 50px;
+  }
+
+  .balance-element--right {
+    right: 10%;
+    width: 40px;
+    height: 40px;
+  }
+
+  .site-footer {
+    padding-left: calc(var(--space-sm) + 40px);
+  }
+}
+
+@media (max-width: 480px) {
+  .grid-container {
+    aspect-ratio: 1;
+  }
+
+  .grid-nodes {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .node__detail {
+    max-width: 140px;
+    font-size: 0.6875rem;
+  }
+}
+
+/* ============================================
+   Accessibility — Reduced Motion
+   ============================================ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .reveal {
+    opacity: 1;
+    transform: none;
+  }
+
+  .flow-statement {
+    opacity: 1;
+    position: static;
+  }
+
+  .flow-container {
+    height: auto;
+    flex-direction: column;
+    gap: var(--space-md);
+  }
+
+  .final-statement,
+  .final-btn {
+    opacity: 1;
+    transform: none;
+  }
+}
